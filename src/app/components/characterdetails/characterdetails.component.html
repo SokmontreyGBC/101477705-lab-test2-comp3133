@@ -1,0 +1,30 @@
+@if (loading()) {
+  <div class="center"><mat-progress-spinner mode="indeterminate" diameter="60" /></div>
+} @else if (character(); as c) {
+  <div class="details-wrap">
+    <button mat-stroked-button color="accent" (click)="back()">← Back</button>
+    <mat-card class="details-card">
+      <div class="layout">
+        <img [src]="imgUrl(c)" [alt]="c.name" class="hero" />
+        <div class="info">
+          <h1>{{ c.name }}</h1>
+          <mat-chip-set>
+            <mat-chip>{{ c.house || 'Unknown House' }}</mat-chip>
+            <mat-chip>{{ c.species }}</mat-chip>
+          </mat-chip-set>
+          <mat-divider />
+          <p><strong>Wizard:</strong> {{ c.wizard ? 'Yes' : 'No' }}</p>
+          <p><strong>Ancestry:</strong> {{ c.ancestry || 'Unknown' }}</p>
+          <p><strong>Actor:</strong> {{ c.actor || 'Unknown' }}</p>
+          <mat-divider />
+          <h3>Wand</h3>
+          <p><strong>Wood:</strong> {{ c.wand?.wood || 'Unknown' }}</p>
+          <p><strong>Core:</strong> {{ c.wand?.core || 'Unknown' }}</p>
+          <p><strong>Length:</strong> {{ c.wand?.length || 'Unknown' }}</p>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+} @else {
+  <p class="center">Character not found.</p>
+}
