@@ -1,0 +1,26 @@
+<div class="filter-bar">
+  <mat-form-field appearance="fill">
+    <mat-label>Filter by House</mat-label>
+    <mat-select [(value)]="selected" (selectionChange)="onChange()">
+      @for (h of houses; track h) {
+        <mat-option [value]="h">{{ h }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+</div>
+
+@if (loading()) {
+  <div class="center"><mat-progress-spinner mode="indeterminate" diameter="60" /></div>
+} @else {
+  <div class="grid">
+    @for (c of characters(); track c.name) {
+      <mat-card class="char-card" (click)="open(c)">
+        <img mat-card-image [src]="imgUrl(c)" [alt]="c.name" />
+        <mat-card-content>
+          <h3>{{ c.name }}</h3>
+          <p class="house" [ngClass]="houseClass(c.house)">{{ c.house || 'Unknown' }}</p>
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+}
