@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -29,17 +29,17 @@ export class CharacterDetailsComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private service = inject(HarryPotterService);
 
-  character: Character | null = null;
-  loading = true;
+  character = signal<Character | null>(null);
+  loading = signal(true);
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id') ?? '';
     this.service.getCharacterById(id).subscribe({
       next: (data) => {
-        this.character = data;
-        this.loading = false;
+        this.character.set(data);
+        this.loading.set(false);
       },
-      error: () => (this.loading = false),
+      error: () => this.loading.set(false),
     });
   }
 }

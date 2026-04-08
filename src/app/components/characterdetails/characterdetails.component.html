@@ -1,24 +1,24 @@
-<div *ngIf="loading" style="display:flex; justify-content:center; padding: 3rem">
+<div *ngIf="loading()" style="display:flex; justify-content:center; padding: 3rem">
   <mat-progress-spinner mode="indeterminate" color="accent"></mat-progress-spinner>
 </div>
 
-<div *ngIf="!loading" style="max-width: 700px; margin: 1.5rem auto; padding: 0 1rem">
+<div *ngIf="!loading() && character() as c" style="max-width: 700px; margin: 1.5rem auto; padding: 0 1rem">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>{{ character?.name }}</mat-card-title>
-      <mat-card-subtitle>{{ character?.house }}</mat-card-subtitle>
+      <mat-card-title>{{ c.name }}</mat-card-title>
+      <mat-card-subtitle>{{ c.house }}</mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image [src]="character?.image || 'assets/placeholder.png'" [alt]="character?.name" />
+    <img mat-card-image [src]="c.image || 'assets/placeholder.png'" [alt]="c.name" />
     <mat-card-content>
       <mat-list>
-        <mat-list-item><span matListItemTitle>Species</span><span matListItemLine>{{ character?.species }}</span></mat-list-item>
-        <mat-list-item><span matListItemTitle>Actor</span><span matListItemLine>{{ character?.actor }}</span></mat-list-item>
-        <mat-list-item><span matListItemTitle>Wizard</span><span matListItemLine>{{ character?.wizard ? 'Yes' : 'No' }}</span></mat-list-item>
-        <mat-list-item><span matListItemTitle>Ancestry</span><span matListItemLine>{{ character?.ancestry }}</span></mat-list-item>
+        <mat-list-item><span matListItemTitle>Species</span><span matListItemLine>{{ c.species }}</span></mat-list-item>
+        <mat-list-item><span matListItemTitle>Actor</span><span matListItemLine>{{ c.actor }}</span></mat-list-item>
+        <mat-list-item><span matListItemTitle>Wizard</span><span matListItemLine>{{ c.wizard ? 'Yes' : 'No' }}</span></mat-list-item>
+        <mat-list-item><span matListItemTitle>Ancestry</span><span matListItemLine>{{ c.ancestry }}</span></mat-list-item>
         <mat-divider></mat-divider>
-        <mat-list-item><span matListItemTitle>Wand Wood</span><span matListItemLine>{{ character?.wand?.wood }}</span></mat-list-item>
-        <mat-list-item><span matListItemTitle>Wand Core</span><span matListItemLine>{{ character?.wand?.core }}</span></mat-list-item>
-        <mat-list-item><span matListItemTitle>Wand Length</span><span matListItemLine>{{ character?.wand?.length }}</span></mat-list-item>
+        <mat-list-item><span matListItemTitle>Wand Wood</span><span matListItemLine>{{ c.wand.wood }}</span></mat-list-item>
+        <mat-list-item><span matListItemTitle>Wand Core</span><span matListItemLine>{{ c.wand.core }}</span></mat-list-item>
+        <mat-list-item><span matListItemTitle>Wand Length</span><span matListItemLine>{{ c.wand.length }}</span></mat-list-item>
       </mat-list>
     </mat-card-content>
     <mat-card-actions>

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -28,20 +28,20 @@ export class CharacterFilterComponent {
   private router = inject(Router);
 
   selectedHouse = '';
-  characters: Character[] = [];
-  loading = false;
+  characters = signal<Character[]>([]);
+  loading = signal(false);
 
   onHouseChange(_event: MatSelectChange): void {
-    this.loading = true;
+    this.loading.set(true);
     const obs = this.selectedHouse
       ? this.service.getCharactersByHouse(this.selectedHouse)
       : this.service.getAllCharacters();
     obs.subscribe({
       next: (data) => {
-        this.characters = data;
-        this.loading = false;
+        this.characters.set(data);
+        this.loading.set(false);
       },
-      error: () => (this.loading = false),
+      error: () => this.loading.set(false),
     });
   }
 
