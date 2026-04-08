@@ -1,15 +1,20 @@
-@if (loading()) {
-  <div class="center"><mat-progress-spinner mode="indeterminate" diameter="60" /></div>
-} @else {
-  <div class="grid">
-    @for (c of characters(); track c.name) {
-      <mat-card class="char-card" (click)="open(c)">
-        <img mat-card-image [src]="imgUrl(c)" [alt]="c.name" />
-        <mat-card-content>
-          <h3>{{ c.name }}</h3>
-          <p class="house" [ngClass]="houseClass(c.house)">{{ c.house || 'Unknown' }}</p>
-        </mat-card-content>
-      </mat-card>
-    }
-  </div>
-}
+<div *ngIf="loading" style="display:flex; justify-content:center; padding: 3rem">
+  <mat-progress-spinner mode="indeterminate" color="accent"></mat-progress-spinner>
+</div>
+
+<div class="card-grid" *ngIf="!loading">
+  <mat-card
+    *ngFor="let character of characters"
+    appearance="outlined"
+    (click)="goToDetails(character.id)"
+    style="cursor: pointer"
+  >
+    <mat-card-header>
+      <mat-card-title>{{ character.name }}</mat-card-title>
+      <mat-card-subtitle [style.color]="getHouseColor(character.house)">
+        {{ character.house || 'Unknown' }}
+      </mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image [src]="character.image || 'assets/placeholder.png'" [alt]="character.name" />
+  </mat-card>
+</div>

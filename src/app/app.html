@@ -1,10 +1,9 @@
-<mat-toolbar class="hp-toolbar">
-  <span class="brand">⚡ Harry Potter</span>
+<mat-toolbar color="primary">
+  <mat-icon>bolt</mat-icon>
+  <span>Harry Potter</span>
   <span class="spacer"></span>
-  <a mat-button routerLink="/characters" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-    All Characters
-  </a>
-  <a mat-button routerLink="/filter" routerLinkActive="active">Filter by House</a>
+  <a mat-button routerLink="/characters" routerLinkActive="active-link">All Characters</a>
+  <a mat-stroked-button routerLink="/filter" routerLinkActive="active-link">Filter by House</a>
 </mat-toolbar>
 
 <main>

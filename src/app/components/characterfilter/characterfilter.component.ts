@@ -1,9 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelectModule, MatSelectChange } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HarryPotterService } from '../../services/harry-potter.service';
@@ -13,7 +13,8 @@ import { Character } from '../../models/character.interface';
   selector: 'app-character-filter',
   standalone: true,
   imports: [
-    CommonModule,
+    NgFor,
+    NgIf,
     FormsModule,
     MatCardModule,
     MatSelectModule,
@@ -21,42 +22,40 @@ import { Character } from '../../models/character.interface';
     MatProgressSpinnerModule,
   ],
   templateUrl: './characterfilter.component.html',
-  styleUrl: './characterfilter.component.scss',
 })
 export class CharacterFilterComponent {
   private service = inject(HarryPotterService);
   private router = inject(Router);
 
-  houses = ['All', 'Gryffindor', 'Slytherin', 'Hufflepuff', 'Ravenclaw'];
-  selected = 'All';
-  characters = signal<Character[]>([]);
-  loading = signal(false);
-  placeholder = 'https://via.placeholder.com/300x400?text=No+Image';
+  selectedHouse = '';
+  characters: Character[] = [];
+  loading = false;
 
-  onChange(): void {
-    this.loading.set(true);
-    const obs =
-      this.selected === 'All'
-        ? this.service.getAllCharacters()
-        : this.service.getCharactersByHouse(this.selected.toLowerCase());
+  onHouseChange(_event: MatSelectChange): void {
+    this.loading = true;
+    const obs = this.selectedHouse
+      ? this.service.getCharactersByHouse(this.selectedHouse)
+      : this.service.getAllCharacters();
     obs.subscribe({
       next: (data) => {
-        this.characters.set(data);
-        this.loading.set(false);
+        this.characters = data;
+        this.loading = false;
       },
-      error: () => this.loading.set(false),
+      error: () => (this.loading = false),
     });
   }
 
-  open(c: Character): void {
-    this.router.navigate(['/characters', c.id]);
+  goToDetails(id: string): void {
+    this.router.navigate(['/characters', id]);
   }
 
-  houseClass(house: string): string {
-    return 'house-' + (house ? house.toLowerCase() : 'unknown');
-  }
-
-  imgUrl(c: Character): string {
-    return c.image && c.image.trim() ? c.image : this.placeholder;
+  getHouseColor(house: string): string {
+    const colors: Record<string, string> = {
+      Gryffindor: '#c41e3a',
+      Slytherin: '#2a623d',
+      Hufflepuff: '#f0c75e',
+      Ravenclaw: '#222f5b',
+    };
+    return colors[house] ?? '#aaa';
   }
 }

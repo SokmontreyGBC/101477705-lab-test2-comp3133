@@ -1,30 +1,30 @@
-@if (loading()) {
-  <div class="center"><mat-progress-spinner mode="indeterminate" diameter="60" /></div>
-} @else if (character(); as c) {
-  <div class="details-wrap">
-    <button mat-stroked-button color="accent" (click)="back()">← Back</button>
-    <mat-card class="details-card">
-      <div class="layout">
-        <img [src]="imgUrl(c)" [alt]="c.name" class="hero" />
-        <div class="info">
-          <h1>{{ c.name }}</h1>
-          <mat-chip-set>
-            <mat-chip>{{ c.house || 'Unknown House' }}</mat-chip>
-            <mat-chip>{{ c.species }}</mat-chip>
-          </mat-chip-set>
-          <mat-divider />
-          <p><strong>Wizard:</strong> {{ c.wizard ? 'Yes' : 'No' }}</p>
-          <p><strong>Ancestry:</strong> {{ c.ancestry || 'Unknown' }}</p>
-          <p><strong>Actor:</strong> {{ c.actor || 'Unknown' }}</p>
-          <mat-divider />
-          <h3>Wand</h3>
-          <p><strong>Wood:</strong> {{ c.wand.wood || 'Unknown' }}</p>
-          <p><strong>Core:</strong> {{ c.wand.core || 'Unknown' }}</p>
-          <p><strong>Length:</strong> {{ c.wand.length || 'Unknown' }}</p>
-        </div>
-      </div>
-    </mat-card>
-  </div>
-} @else {
-  <p class="center">Character not found.</p>
-}
+<div *ngIf="loading" style="display:flex; justify-content:center; padding: 3rem">
+  <mat-progress-spinner mode="indeterminate" color="accent"></mat-progress-spinner>
+</div>
+
+<div *ngIf="!loading" style="max-width: 700px; margin: 1.5rem auto; padding: 0 1rem">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ character?.name }}</mat-card-title>
+      <mat-card-subtitle>{{ character?.house }}</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image [src]="character?.image || 'assets/placeholder.png'" [alt]="character?.name" />
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item><span matListItemTitle>Species</span><span matListItemLine>{{ character?.species }}</span></mat-list-item>
+        <mat-list-item><span matListItemTitle>Actor</span><span matListItemLine>{{ character?.actor }}</span></mat-list-item>
+        <mat-list-item><span matListItemTitle>Wizard</span><span matListItemLine>{{ character?.wizard ? 'Yes' : 'No' }}</span></mat-list-item>
+        <mat-list-item><span matListItemTitle>Ancestry</span><span matListItemLine>{{ character?.ancestry }}</span></mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item><span matListItemTitle>Wand Wood</span><span matListItemLine>{{ character?.wand?.wood }}</span></mat-list-item>
+        <mat-list-item><span matListItemTitle>Wand Core</span><span matListItemLine>{{ character?.wand?.core }}</span></mat-list-item>
+        <mat-list-item><span matListItemTitle>Wand Length</span><span matListItemLine>{{ character?.wand?.length }}</span></mat-list-item>
+      </mat-list>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button routerLink="/characters">
+        <mat-icon>arrow_back</mat-icon> Back
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
